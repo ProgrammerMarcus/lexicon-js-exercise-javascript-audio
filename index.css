@@ -1,0 +1,60 @@
+:root {
+    --main-bg-color: rgb(0, 0, 0, 0.75);
+    --dark-bg-color: rgb(41, 43, 59);
+    --trans-bg-color: rgba(135, 136, 139, 0.2);
+    --color-bg: rgb(184, 184, 184);
+    --border-color: rgb(190, 215, 219);
+    --radius: 25px;
+    --width: 256px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    background: center / cover url("/assets/bg.webp"), var(--main-bg-color);
+}
+
+.root {
+    margin: 24px auto;
+    display: grid;
+    place-content: center;
+}
+
+.controls {
+    border-radius: 12px;
+    padding: 12px;
+    width: min-content;
+    margin: 0 auto;
+    .buttons {
+        display: grid;
+        place-content: center;
+        margin: 0 auto;
+        grid-auto-flow: column;
+        span {
+            font-size: 3rem;
+        }
+    }
+    .cover {
+        margin: 20px;
+        width: var(--width);
+        border-radius: var(--radius);
+    }
+}
+
+.playlist {
+    margin: 0 auto;
+    width: var(--width);
+    .track {
+        display: grid;
+        place-items: left center;
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid white;
+    }
+    .track:hover {
+        background-color: white;
+        color: black;
+    }
+}

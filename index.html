@@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Audio-Video</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <script src="index.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Media Player</title>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        />
+        <link rel="stylesheet" href="index.css" />
+        <script defer src="index.js"></script>
+    </head>
+    <body>
+        <div class="root">
+            <div class="controls">
+                <img
+                    class="cover"
+                    src="/tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.jpg"
+                    alt="Album cover"
+                />
+                <div class="buttons">
+                    <span class="previous material-symbols-outlined"> arrow_back_ios_new </span>
+                    <span class="play material-symbols-outlined"> play_circle </span>
+                    <span class="pause material-symbols-outlined"> pause_circle </span>
+                    <span class="repeat material-symbols-outlined"> repeat_one </span>
+                    <span class="shuffle material-symbols-outlined"> shuffle </span>
+                    <span class="next material-symbols-outlined"> arrow_forward_ios </span>
+                </div>
+                <input
+                    type="range"
+                    id="progress"
+                    name="progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="1"
+                />
+            </div>
+            <template id="template-track">
+                <div class="track">
+                    <p class="title"></p>
+                    <p class="artist"></p>
+                </div>
+            </template>
+            <div class="playlist"></div>
+        </div>
+    </body>
 </html>
