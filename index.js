@@ -1,56 +1,53 @@
+const db = [
+    {
+        title: "Boys, Girls, Toys & Words",
+        artist: "Modern Pitch",
+        cover: "tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.jpg",
+        track: "tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.mp3",
+        album: "Eye Of The Storm",
+    },
+    {
+        album: "Inception",
+        title: "Higher And Higher",
+        artist: "Scream Inc",
+        cover: "tracks/Higher_And_Higher_-_Scream_Inc._(3).jpg",
+        track: "tracks/Higher_And_Higher_-_Scream_Inc._(3).mp3",
+    },
+    {
+        album: "Not My Problem (Single)",
+        title: "Not My Problem",
+        artist: "All My Friends Hate Me",
+        cover: "tracks/Not_My_Problem_-_All_My_Friends_Hate_Me.jpg",
+        track: "tracks/Not_My_Problem_-_All_My_Friends_Hate_Me.mp3",
+    },
+    {
+        album: "Apply Within",
+        title: "Old News",
+        artist: "Hot Fiction",
+        cover: "tracks/Old_News_-_Hot_Fiction.jpg",
+        track: "tracks/Old_News_-_Hot_Fiction.mp3",
+    },
+    {
+        album: "Kites",
+        title: "Peyote",
+        artist: "Kinematic",
+        cover: "tracks/Peyote_-_Kinematic.jpg",
+        track: "tracks/Peyote_-_Kinematic.mp3",
+    },
+    {
+        album: "Jupiter",
+        title: "Say Goodbye",
+        artist: "VITNE",
+        cover: "tracks/Say_Goodbye_-_VITNE.jpg",
+        track: "tracks/Say_Goodbye_-_VITNE.mp3",
+    },
+].sort((a, b) => a.title.localeCompare(b.title))
+
 const state = {
     repeat: false,
     shuffle: false,
     current: 0,
-    playlistNumber: 0,
-    playlists: [],
-    songs: [
-        {
-            title: "Boys, Girls, Toys & Words",
-            artist: "Modern Pitch",
-            cover: "tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.jpg",
-            track: "tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.mp3",
-            album: "Eye Of The Storm",
-        },
-        {
-            album: "Inception",
-            title: "Higher And Higher",
-            artist: "Scream Inc",
-            cover: "tracks/Higher_And_Higher_-_Scream_Inc._(3).jpg",
-            track: "tracks/Higher_And_Higher_-_Scream_Inc._(3).mp3",
-        },
-        {
-            album: "Not My Problem (Single)",
-            title: "Not My Problem",
-            artist: "All My Friends Hate Me",
-            cover: "tracks/Not_My_Problem_-_All_My_Friends_Hate_Me.jpg",
-            track: "tracks/Not_My_Problem_-_All_My_Friends_Hate_Me.mp3",
-        },
-        {
-            album: "Apply Within",
-            title: "Old News",
-            artist: "Hot Fiction",
-            cover: "tracks/Old_News_-_Hot_Fiction.jpg",
-            track: "tracks/Old_News_-_Hot_Fiction.mp3",
-        },
-        {
-            album: "Kites",
-            title: "Peyote",
-            artist: "Kinematic",
-            cover: "tracks/Peyote_-_Kinematic.jpg",
-            track: "tracks/Peyote_-_Kinematic.mp3",
-        },
-        {
-            album: "Jupiter",
-            title: "Say Goodbye",
-            artist: "VITNE",
-            cover: "tracks/Say_Goodbye_-_VITNE.jpg",
-            track: "tracks/Say_Goodbye_-_VITNE.mp3",
-        },
-    ].sort((a, b) => a.title.localeCompare(b.title)),
-    constructor() {
-        this.playlists.push(this.songs)
-    }
+    songs: db,
 };
 
 document.querySelector(".buttons").addEventListener("click", (e) => {
@@ -145,9 +142,15 @@ function play() {
     highlight()
 }
 
-function playPause() {
-    if (audio.paused) {
+function playPause(bypass = false) {
+    
+    if (bypass) {
+        audio.src = state.songs[state.current].track
+        audio.play();
+        document.querySelector(".pause").innerText = " pause_circle "
+    } else if (audio.paused) {
         let temp = audio.currentTime;
+        audio.src = state.songs[state.current].track
         audio.play();
         audio.currentTime = temp;
         document.querySelector(".pause").innerText = " pause_circle "
@@ -191,24 +194,28 @@ function highlight() {
 
 document.querySelectorAll(".switch").forEach((s) => {
     s.addEventListener("click", (e) => {
+        if (getComputedStyle(document.querySelector(".pop-up"))["display"] === "block") {
+            document.querySelector(".pop-up").style.display = "none"
+            return
+        }
         document.querySelector(".pop-up").style.display = "block"
         for (c of document.querySelectorAll("#select .container")) {
             c.remove()
         }
         if (e.currentTarget.classList.contains("tracks")) {
-            for (t of state.songs) {
+            for (t of db) {
                 let clone = document.querySelector("#template-selector").cloneNode(true).content
                 clone.querySelector("label span").insertAdjacentText('beforeend', t.title);
                 document.querySelector("#select").appendChild(clone)
             }
         } else if (e.currentTarget.classList.contains("albums")) {
-            for (t of state.songs) {
+            for (t of db) {
                 let clone = document.querySelector("#template-selector").cloneNode(true).content
                 clone.querySelector("label span").insertAdjacentText('beforeend', t.album);
                 document.querySelector("#select").appendChild(clone)
             }
         } else if (e.currentTarget.classList.contains("artists")) {
-            for (t of state.songs) {
+            for (t of db) {
                 let clone = document.querySelector("#template-selector").cloneNode(true).content
                 clone.querySelector("label span").insertAdjacentText('beforeend', t.artist);
                 document.querySelector("#select").appendChild(clone)
@@ -220,8 +227,11 @@ document.querySelectorAll(".switch").forEach((s) => {
 
 document.querySelector("#select").addEventListener("submit", (e) => {
     e.preventDefault()
-    console.log(e)
-    e.currentTarget.querySelectorAll("input:checked").forEach((c) => console.log(c.nextElementSibling.innerText)) 
+    let accepted = Array.from(e.currentTarget.querySelectorAll("input:checked")).map((c) => c.nextElementSibling.innerText)
+    state.songs = Array.from(db).filter((a) => accepted.includes(a.title))
+    generatePlaylist()
+    playPause(true)
+    document.querySelector(".pop-up").style.display = "none"
 })
 
 
