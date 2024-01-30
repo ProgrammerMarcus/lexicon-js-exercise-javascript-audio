@@ -1,11 +1,13 @@
 :root {
-    --main-bg-color: rgb(0, 0, 0, 0.75);
-    --dark-bg-color: rgb(41, 43, 59);
-    --trans-bg-color: rgba(135, 136, 139, 0.2);
-    --color-bg: rgb(184, 184, 184);
-    --border-color: rgb(190, 215, 219);
-    --radius: 25px;
+    --main-bg: rgb(0, 0, 0, 0.75);
+    --dark-bg: rgb(41, 43, 59);
+    --trans-bg: rgba(29, 36, 56, 0.377);
+    --light-bg: rgba(184, 184, 184, 0.448);
+    --border: rgb(190, 215, 219);
+    --radius: 15px;
     --width: 256px;
+    --accent: rgb(99, 255, 164);
+    --active: rgb(232, 0, 108);
 }
 
 body {
@@ -13,48 +15,139 @@ body {
     padding: 0;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    background: center / cover url("/assets/bg.webp"), var(--main-bg-color);
+    background: center / cover url("/assets/bg.webp"), var(--main-bg);
+    transition: 0.5s;
+    min-height: 100svh;
+}
+
+.bar {
+    width: 100%;
+    display: grid;
+    grid-auto-flow: column;
+    place-content: stretch center;
+    position: sticky;
+    top: 0;
+    background-color: var(--trans-bg);
+    padding: 0.5rem 0;
+    gap: 1px;
+    .switch {
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 6rem;
+        align-self: stretch;
+        text-align: center;
+        display: grid;
+        place-content: center;
+        user-select: none;
+    }
+    .switch:hover {
+        color: var(--accent);
+    }
+    .switch:active {
+        color: var(--active);
+    }
+}
+
+.cover {
+    margin-bottom: 1rem;
+    width: var(--width);
+    border-radius: var(--radius);
 }
 
 .root {
-    margin: 24px auto;
+    margin: 0.5rem auto 4.5rem auto;
     display: grid;
     place-content: center;
 }
 
-.controls {
-    border-radius: 12px;
-    padding: 12px;
-    width: min-content;
-    margin: 0 auto;
-    .buttons {
-        display: grid;
-        place-content: center;
-        margin: 0 auto;
-        grid-auto-flow: column;
-        span {
-            font-size: 3rem;
-        }
+.tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template: min-content / min-content;
+    gap: 0.3rem;
+    .tab {
+        border: 1px solid white;
+        padding: 0.3rem;
+        border-radius: 25px;
+        font-size: 1rem;
+        text-align: center;
+        user-select: none;
     }
-    .cover {
-        margin: 20px;
-        width: var(--width);
-        border-radius: var(--radius);
+    .new {
+        width: 1.2rem;
+    }
+    .tab:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+    .tab:active {
+        color: var(--active);
+        border-color: var(--active);
     }
 }
 
 .playlist {
     margin: 0 auto;
     width: var(--width);
+    cursor: pointer;
     .track {
         display: grid;
         place-items: left center;
         font-size: 1.2rem;
-        padding: 0.5rem;
         border-bottom: 1px solid white;
     }
     .track:hover {
         background-color: white;
         color: black;
+    }
+}
+
+.controls {
+    position: fixed;
+    bottom: 0;
+    background-color: var(--trans-bg);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    .buttons {
+        display: grid;
+        place-content: center;
+        margin: 0.5rem auto;
+        grid-auto-flow: column;
+        cursor: pointer;
+        gap: 5px;
+        span {
+            font-size: 2.5rem;
+        }
+        span:hover {
+            color: var(--accent);
+        }
+        span:active {
+            color: var(--active);
+        }
+    }
+    .duration {
+        appearance: none;
+        height: 1rem;
+        background: var(--light-bg);
+        background-image: linear-gradient(270deg, var(--accent), var(--active));
+        background-size: 0% 100%;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+
+    /** Hide handle Chromium **/
+    input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 0;
+        height: 0;
+    }
+
+    /** Hide handle Firefox **/
+    input[type="range"]::-moz-range-thumb {
+        width: 0;
+        height: 0;
     }
 }
