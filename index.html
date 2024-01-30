@@ -13,26 +13,33 @@
     </head>
     <body>
         <div class="bar">
-            <span class="switch">
+            <span class="switch tracks">
                 <span class="material-symbols-outlined"> album </span>Tracks
             </span>
-            <span class="switch">
+            <span class="switch albums">
                 <span class="material-symbols-outlined"> library_music </span>Albums
             </span>
-            <span class="switch">
+            <span class="switch artists">
                 <span class="material-symbols-outlined"> artist </span>Artists
             </span>
+        </div>
+        <template id="template-selector">
+            <label class="container">
+                <input type="checkbox" checked="checked" />
+                <span></span>
+            </label>
+        </template>
+        <div class="pop-up">
+            <form class="select" id="select">
+                <h2>Tracks</h2>
+                <button type="submit">Play</button>
+            </form>
         </div>
         <div class="root">
             <div class="info">
                 <span class="title">Placeholder</span>
-                <img
-                    class="cover"
-                    src=""
-                    alt="Album cover"
-                />
+                <img class="cover" src="" alt="Album cover" />
             </div>
-
             <template id="template-track">
                 <div class="track">
                     <p class="title"></p>

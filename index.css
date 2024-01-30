@@ -1,13 +1,13 @@
 :root {
     --main-bg: rgb(0, 0, 0, 0.75);
     --dark-bg: rgb(41, 43, 59);
-    --trans-bg: rgba(7, 13, 28, 0.656);
+    --trans-bg: rgba(7, 13, 28, 0.83);
     --light-bg: rgba(184, 184, 184, 0.448);
     --border: rgb(190, 215, 219);
     --radius: 15px;
     --width: 320px;
-    --accent: rgb(99, 255, 164);
-    --active: rgb(232, 0, 108);
+    --accent: rgb(232, 0, 108);
+    --active: rgb(0, 189, 114);
 }
 
 body {
@@ -49,6 +49,67 @@ body {
         color: var(--active);
     }
 }
+
+.pop-up {
+    display: none;
+    h2 {
+        margin: 0;
+    }
+    background-color: var(--trans-bg);
+    top: 5rem;
+    left: 15%;
+    position: fixed;
+    width: 66%;
+    height: 75svh;
+    padding: 2%;
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    .select {
+        display: grid;
+        grid-auto-flow: row;
+        gap: 0.5rem;
+    }
+    label {
+        cursor: pointer;
+    }
+    input[type='checkbox'] {
+        visibility: hidden;
+        width: 1rem;
+        margin: 0;
+        cursor: pointer;
+    }
+    input[type='checkbox']::before {
+        display: block;
+        content: "";
+        background-color: var(--accent);
+        visibility: visible;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 100%;
+    }
+    input[type='checkbox']:checked:before {
+        background-color: var(--active);
+    }
+    overflow-y: scroll;
+    scrollbar-color: white transparent;
+    scrollbar-width: thin;
+    button {
+        position: fixed;
+        top: 80svh;
+        right: 18svw;
+        background-color: white;
+        padding: 0.5rem;
+        font-size: 1.5rem;
+        border-radius: var(--radius);
+    }
+    button:hover {
+        background-color: var(--accent);
+    }
+    button:active {
+        background-color: var(--active);
+    }
+}
+
 .info {
     display: grid;
     .cover {
@@ -63,7 +124,6 @@ body {
     }
 
 }
-
 
 .root {
     margin: 0.5rem auto 4.5rem auto;

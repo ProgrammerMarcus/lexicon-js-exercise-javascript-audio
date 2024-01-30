@@ -189,6 +189,43 @@ function highlight() {
     document.querySelectorAll(".playlist .track")[state.current].classList.add("playing")
 }
 
+document.querySelectorAll(".switch").forEach((s) => {
+    s.addEventListener("click", (e) => {
+        document.querySelector(".pop-up").style.display = "block"
+        for (c of document.querySelectorAll("#select .container")) {
+            c.remove()
+        }
+        if (e.currentTarget.classList.contains("tracks")) {
+            for (t of state.songs) {
+                let clone = document.querySelector("#template-selector").cloneNode(true).content
+                clone.querySelector("label span").insertAdjacentText('beforeend', t.title);
+                document.querySelector("#select").appendChild(clone)
+            }
+        } else if (e.currentTarget.classList.contains("albums")) {
+            for (t of state.songs) {
+                let clone = document.querySelector("#template-selector").cloneNode(true).content
+                clone.querySelector("label span").insertAdjacentText('beforeend', t.album);
+                document.querySelector("#select").appendChild(clone)
+            }
+        } else if (e.currentTarget.classList.contains("artists")) {
+            for (t of state.songs) {
+                let clone = document.querySelector("#template-selector").cloneNode(true).content
+                clone.querySelector("label span").insertAdjacentText('beforeend', t.artist);
+                document.querySelector("#select").appendChild(clone)
+            }
+        }
+
+    })
+})
+
+document.querySelector("#select").addEventListener("submit", (e) => {
+    e.preventDefault()
+    console.log(e)
+    e.currentTarget.querySelectorAll("input:checked").forEach((c) => console.log(c.nextElementSibling.innerText)) 
+})
+
+
+
 function init() {
     generatePlaylist();
 }
