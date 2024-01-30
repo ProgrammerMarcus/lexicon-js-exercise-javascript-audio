@@ -59,7 +59,7 @@ body {
     .title {
         font-size: 1.2rem;
         text-align: center;
-        margin: 0.2rem 0;
+        margin: 0.3rem 0;
     }
 
 }
@@ -160,6 +160,9 @@ body {
         span:active {
             color: var(--active);
         }
+    }
+    .buttons .active {
+        color: var(--active);
     }
     .duration {
         appearance: none;

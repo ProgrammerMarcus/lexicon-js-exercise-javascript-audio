@@ -62,9 +62,19 @@ document.querySelector(".buttons").addEventListener("click", (e) => {
         playPause();
     } else if (e.target.classList.contains("repeat")) {
         state.repeat = !state.repeat;
+        if (state.repeat) {
+            e.target.classList.add("active")
+        } else {
+            e.target.classList.remove("active")
+        }
     } else if (e.target.classList.contains("shuffle")) {
         toggleShuffle();
         shuffle();
+        if (state.shuffle) {
+            e.target.classList.add("active")
+        } else {
+            e.target.classList.remove("active")
+        }
     } else if (e.target.classList.contains("play")) {
         playPause();
     }
@@ -131,8 +141,8 @@ function toggleShuffle() {
 function play() {
     audio.src = state.songs[state.current].track;
     document.querySelector(".info .cover").src = state.songs[state.current].cover;
+    document.querySelector(".info .title").innerText = state.songs[state.current].title;
     highlight()
-    audio.play();
 }
 
 function playPause() {
@@ -140,8 +150,10 @@ function playPause() {
         let temp = audio.currentTime;
         audio.play();
         audio.currentTime = temp;
+        document.querySelector(".pause").innerText = " pause_circle "
     } else {
         audio.pause();
+        document.querySelector(".pause").innerText = " play_circle "
     }
 }
 
@@ -164,6 +176,8 @@ function generatePlaylist() {
         list.appendChild(clone);
     }
     state.current = 0
+    document.querySelector(".cover").src = state.songs[state.current].cover;
+    document.querySelector(".info .title").innerText = state.songs[state.current].title;
     highlight()
 }
 
@@ -177,7 +191,6 @@ function highlight() {
 
 function init() {
     generatePlaylist();
-    document.querySelector(".cover").src = state.songs[state.current].cover;
 }
 
 init();
