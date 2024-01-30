@@ -130,7 +130,8 @@ function toggleShuffle() {
 
 function play() {
     audio.src = state.songs[state.current].track;
-    document.querySelector(".controls .cover").src = state.songs[state.current].cover;
+    document.querySelector(".info .cover").src = state.songs[state.current].cover;
+    highlight()
     audio.play();
 }
 
@@ -147,14 +148,14 @@ function playPause() {
 function generatePlaylist() {
     const list = document.querySelector(".playlist");
     list.replaceChildren();
-    for (t in state.songs) {
+    for (let t in state.songs) {
         let clone = document.querySelector("#template-track").cloneNode(true).content;
         clone.querySelector(".title").innerText = state.songs[t].title;
-        clone.querySelector(".artist").innerText = state.songs[t].artist;
-        clone.querySelector(".album").innerText = state.songs[t].album;
+        clone.querySelector(".artist").innerText = `Artist: ${state.songs[t].artist}`;
+        clone.querySelector(".album").innerText =  `Album: ${state.songs[t].album}`;
         clone.querySelector(".track").addEventListener("click", (e) => {
             if (state.current === t) {
-                pause();
+                playPause();
             } else {
                 state.current = t;
                 play();
@@ -162,6 +163,16 @@ function generatePlaylist() {
         });
         list.appendChild(clone);
     }
+    state.current = 0
+    highlight()
+}
+
+function highlight() {
+    let playing = document.querySelector(".playing")
+    if (playing) {
+        playing.classList.remove("playing")
+    }
+    document.querySelectorAll(".playlist .track")[state.current].classList.add("playing")
 }
 
 function init() {

@@ -1,11 +1,11 @@
 :root {
     --main-bg: rgb(0, 0, 0, 0.75);
     --dark-bg: rgb(41, 43, 59);
-    --trans-bg: rgba(29, 36, 56, 0.377);
+    --trans-bg: rgba(7, 13, 28, 0.656);
     --light-bg: rgba(184, 184, 184, 0.448);
     --border: rgb(190, 215, 219);
     --radius: 15px;
-    --width: 256px;
+    --width: 320px;
     --accent: rgb(99, 255, 164);
     --active: rgb(232, 0, 108);
 }
@@ -18,6 +18,8 @@ body {
     background: center / cover url("/assets/bg.webp"), var(--main-bg);
     transition: 0.5s;
     min-height: 100svh;
+    user-select: none;
+    font-weight: normal;
 }
 
 .bar {
@@ -39,7 +41,6 @@ body {
         text-align: center;
         display: grid;
         place-content: center;
-        user-select: none;
     }
     .switch:hover {
         color: var(--accent);
@@ -48,12 +49,21 @@ body {
         color: var(--active);
     }
 }
+.info {
+    display: grid;
+    .cover {
+        margin-bottom: 1rem;
+        width: var(--width);
+        border-radius: var(--radius);
+    }
+    .title {
+        font-size: 1.2rem;
+        text-align: center;
+        margin: 0.2rem 0;
+    }
 
-.cover {
-    margin-bottom: 1rem;
-    width: var(--width);
-    border-radius: var(--radius);
 }
+
 
 .root {
     margin: 0.5rem auto 4.5rem auto;
@@ -66,6 +76,7 @@ body {
     grid-auto-flow: column;
     grid-template: min-content / min-content;
     gap: 0.3rem;
+    margin-bottom: 0.2rem;
     .tab {
         border: 1px solid white;
         padding: 0.3rem;
@@ -78,28 +89,50 @@ body {
         width: 1.2rem;
     }
     .tab:hover {
-        color: var(--accent);
-        border-color: var(--accent);
+        color: black;
+        border-color: black;
+        background-color: var(--accent);
     }
     .tab:active {
-        color: var(--active);
-        border-color: var(--active);
+        background-color: var(--active);
     }
 }
 
 .playlist {
-    margin: 0 auto;
     width: var(--width);
     cursor: pointer;
+    margin-bottom: 4rem;
     .track {
         display: grid;
-        place-items: left center;
-        font-size: 1.2rem;
-        border-bottom: 1px solid white;
+        margin: 0.3rem 0 0 0;
+        padding: 0.3rem 0;
+        border-bottom: 1px solid var(--light-bg);
+        p {
+            margin: 0 0.3rem;
+        }
+        .album, .artist {
+            font-size: 0.8rem;
+            text-overflow: ellipsis;
+            text-wrap: nowrap;
+            overflow: hidden;
+        }
+        
     }
     .track:hover {
-        background-color: white;
+        background-color: var(--accent);
         color: black;
+        border-bottom: 1px solid var(--accent);
+    }
+    .track:active {
+        background-color: var(--active);
+        color: white;
+        border-bottom: 1px solid var(--active);
+    }
+    .playing {
+        background-color: var(--active);
+        color: white;
+        border-bottom: 1px solid var(--active);
+        border-left: 3px solid white;
     }
 }
 

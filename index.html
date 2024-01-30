@@ -24,16 +24,20 @@
             </span>
         </div>
         <div class="root">
-            <img
-                class="cover"
-                src="/tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.jpg"
-                alt="Album cover"
-            />
+            <div class="info">
+                <span class="title">Placeholder</span>
+                <img
+                    class="cover"
+                    src="/tracks/Boys,_Girls,_Toys_&_Words_-_Modern_Pitch.jpg"
+                    alt="Album cover"
+                />
+            </div>
+
             <template id="template-track">
                 <div class="track">
                     <p class="title"></p>
-                    <p class="artist"></p>
                     <p class="album"></p>
+                    <p class="artist"></p>
                 </div>
             </template>
             <div class="tabs">
@@ -45,15 +49,15 @@
 
         <div class="controls">
             <input
-            type="range"
-            id="progress"
-            name="progress"
-            min="0"
-            max="100"
-            value="0"
-            step="1"
-            class="duration"
-        />
+                type="range"
+                id="progress"
+                name="progress"
+                min="0"
+                max="100"
+                value="0"
+                step="1"
+                class="duration"
+            />
             <div class="buttons">
                 <span class="previous material-symbols-outlined"> arrow_back_ios_new </span>
                 <span class="play material-symbols-outlined"> play_circle </span>
