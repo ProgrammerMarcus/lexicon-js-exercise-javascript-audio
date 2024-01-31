@@ -47,7 +47,9 @@ const state = {
     repeat: false,
     shuffle: false,
     current: 0,
+    playlist: 0,
     songs: db,
+    playlists: [],
 };
 
 document.querySelector(".buttons").addEventListener("click", (e) => {
@@ -106,7 +108,8 @@ function next() {
     } else if (state.current !== state.songs.length - 1) {
         state.current += 1;
     }
-    play();
+    play()
+    playPause(true);
 }
 
 function previous() {
@@ -115,7 +118,8 @@ function previous() {
     } else if (state.current !== 0) {
         state.current = state.current - 1;
     }
-    play();
+    play()
+    playPause(true);
 }
 
 function shuffle() {
@@ -128,6 +132,7 @@ function shuffle() {
         state.current = 0;
     }
     play();
+    playPause(true)
     generatePlaylist();
 }
 
@@ -143,20 +148,23 @@ function play() {
 }
 
 function playPause(bypass = false) {
-    
-    if (bypass) {
-        audio.src = state.songs[state.current].track
-        audio.play();
-        document.querySelector(".pause").innerText = " pause_circle "
-    } else if (audio.paused) {
-        let temp = audio.currentTime;
-        audio.src = state.songs[state.current].track
-        audio.play();
-        audio.currentTime = temp;
-        document.querySelector(".pause").innerText = " pause_circle "
+    if (state.songs.length !== 0) {
+        if (bypass) {
+            play()
+            audio.play();
+            document.querySelector(".pause").innerText = " pause_circle "
+        } else if (audio.paused) {
+            let temp = audio.currentTime;
+            audio.src = state.songs[state.current].track
+            audio.play();
+            audio.currentTime = temp;
+            document.querySelector(".pause").innerText = " pause_circle "
+        } else {
+            audio.pause();
+            document.querySelector(".pause").innerText = " play_circle "
+        }
     } else {
-        audio.pause();
-        document.querySelector(".pause").innerText = " play_circle "
+        audio.src = ""
     }
 }
 
@@ -179,17 +187,24 @@ function generatePlaylist() {
         list.appendChild(clone);
     }
     state.current = 0
-    document.querySelector(".cover").src = state.songs[state.current].cover;
-    document.querySelector(".info .title").innerText = state.songs[state.current].title;
+    if (state.songs.length !== 0) {
+        document.querySelector(".cover").src = state.songs[state.current].cover;
+        document.querySelector(".info .title").innerText = state.songs[state.current].title;
+    } else {
+        document.querySelector(".cover").src = "assets/cover.jpg"
+        document.querySelector(".info .title").innerText = "None";
+    }
     highlight()
 }
 
 function highlight() {
-    let playing = document.querySelector(".playing")
-    if (playing) {
-        playing.classList.remove("playing")
+    if (state.songs.length !== 0) {
+        let playing = document.querySelector(".playing")
+        if (playing) {
+            playing.classList.remove("playing")
+        }
+        document.querySelectorAll(".playlist .track")[state.current].classList.add("playing")
     }
-    document.querySelectorAll(".playlist .track")[state.current].classList.add("playing")
 }
 
 document.querySelectorAll(".switch").forEach((s) => {
@@ -225,6 +240,7 @@ document.querySelectorAll(".switch").forEach((s) => {
     })
 })
 
+/** Need to add proper filtering */
 document.querySelector("#select").addEventListener("submit", (e) => {
     e.preventDefault()
     let accepted = Array.from(e.currentTarget.querySelectorAll("input:checked")).map((c) => c.nextElementSibling.innerText)
@@ -234,7 +250,26 @@ document.querySelector("#select").addEventListener("submit", (e) => {
     document.querySelector(".pop-up").style.display = "none"
 })
 
+document.querySelector(".tabs > .tab.new").addEventListener("click", (e) => {
+    if (state.playlists.length >= 9) {
+        return
+    }
+    let clone = document.querySelector("#template-tab").cloneNode(true).content.firstElementChild
+    let newPlaylist = []
+    state.playlists.push(newPlaylist)
+    clone.innerText = state.playlists.length
+    clone.setAttribute("num", state.playlists.length - 1)
+    clone.addEventListener("click", (e) => {
+        state.playlists[state.playlist] = state.songs
+        state.playlist = e.currentTarget.getAttribute("num")
+        state.songs = state.playlists[e.currentTarget.getAttribute("num")]
+        console.log(state.playlist, state.songs)
+        generatePlaylist()
+        playPause(true)
+    })
+    e.currentTarget.insertAdjacentElement("beforebegin", clone)
 
+})
 
 function init() {
     generatePlaylist();
