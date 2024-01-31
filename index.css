@@ -156,6 +156,10 @@ body {
     .tab:active {
         background-color: var(--active);
     }
+    .tab.selected {
+        background-color: white;
+        color: black;
+    }
 }
 
 .playlist {

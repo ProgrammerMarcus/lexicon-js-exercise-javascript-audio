@@ -182,6 +182,7 @@ function generatePlaylist() {
             } else {
                 state.current = t;
                 play();
+                playPause(true)
             }
         });
         list.appendChild(clone);
@@ -250,28 +251,38 @@ document.querySelector("#select").addEventListener("submit", (e) => {
     document.querySelector(".pop-up").style.display = "none"
 })
 
-document.querySelector(".tabs > .tab.new").addEventListener("click", (e) => {
+function newTab(name = "") {
     if (state.playlists.length >= 9) {
         return
     }
     let clone = document.querySelector("#template-tab").cloneNode(true).content.firstElementChild
     let newPlaylist = []
     state.playlists.push(newPlaylist)
-    clone.innerText = state.playlists.length
+    if (name !== "") {
+        clone.innerText = name
+    } else {
+        clone.innerText = state.playlists.length
+    }
     clone.setAttribute("num", state.playlists.length - 1)
     clone.addEventListener("click", (e) => {
+        document.querySelector(".tabs .selected").classList.remove("selected")
+        e.currentTarget.classList.add("selected")
         state.playlists[state.playlist] = state.songs
         state.playlist = e.currentTarget.getAttribute("num")
         state.songs = state.playlists[e.currentTarget.getAttribute("num")]
-        console.log(state.playlist, state.songs)
         generatePlaylist()
         playPause(true)
     })
-    e.currentTarget.insertAdjacentElement("beforebegin", clone)
+    document.querySelector(".tabs > .tab.new").insertAdjacentElement("beforebegin", clone)
+    return clone
+}
 
+document.querySelector(".tabs > .tab.new").addEventListener("click", () => {
+    newTab()
 })
 
 function init() {
+    newTab("Auto").classList.add("selected")
     generatePlaylist();
 }
 
