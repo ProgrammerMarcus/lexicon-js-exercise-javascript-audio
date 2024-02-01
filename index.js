@@ -277,22 +277,46 @@ function newTab(name = "") {
     if (name !== "") {
         clone.innerText = name;
     } else {
-        clone.innerText = state.playlists.length;
+        clone.innerText = state.playlists.length - 1;
     }
-    clone.setAttribute("num", state.playlists.length - 1);
+    if (name === "") {
+        clone.classList.add("custom");
+    }
     clone.addEventListener("click", (e) => {
-        document.querySelector(".tabs .selected").classList.remove("selected");
+        if (document.querySelector(".tabs .selected")) {
+            document.querySelector(".tabs .selected").classList.remove("selected");
+        }
         e.currentTarget.classList.add("selected");
         state.playlists[state.playlist] = state.songs;
-        state.playlist = e.currentTarget.getAttribute("num");
-        state.songs = state.playlists[e.currentTarget.getAttribute("num")];
+        state.playlist = Number(e.currentTarget.innerText);
+        if (Number(e.currentTarget.innerText)) {
+            state.songs = state.playlists[Number(e.currentTarget.innerText)];
+        } else {
+            state.songs = state.playlists[0];
+        }
         generatePlaylist();
         playPause(true);
     });
     document.querySelector(".tabs > .tab.new").insertAdjacentElement("beforebegin", clone);
-    if (state.playlists.length >= 9) {
-        document.querySelector(".tabs .tab.new").style.display = "none"
+    if (state.playlists.length >= 10) {
+        document.querySelector(".tabs .tab.new").style.display = "none";
+    } else {
+        document.querySelector(".tabs .tab.new").style.display = "block";
     }
+    clone.addEventListener("dblclick", () => {
+        state.playlists.splice(Number(clone.innerText), 1);
+        state.playlist -= 1;
+        clone.remove();
+        let numbered = document.querySelectorAll(".tabs .custom");
+        for (e in numbered) {
+            numbered[e].innerText = Number(e) + 1;
+        }
+        if (state.playlists.length >= 10) {
+            document.querySelector(".tabs .tab.new").style.display = "none";
+        } else {
+            document.querySelector(".tabs .tab.new").style.display = "block";
+        }
+    });
     return clone;
 }
 
