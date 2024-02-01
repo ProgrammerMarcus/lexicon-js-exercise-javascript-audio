@@ -271,9 +271,6 @@ document.querySelector("#select").addEventListener("submit", (e) => {
 });
 
 function newTab(name = "") {
-    if (state.playlists.length >= 9) {
-        return;
-    }
     let clone = document.querySelector("#template-tab").cloneNode(true).content.firstElementChild;
     let newPlaylist = [];
     state.playlists.push(newPlaylist);
@@ -293,6 +290,9 @@ function newTab(name = "") {
         playPause(true);
     });
     document.querySelector(".tabs > .tab.new").insertAdjacentElement("beforebegin", clone);
+    if (state.playlists.length >= 9) {
+        document.querySelector(".tabs .tab.new").style.display = "none"
+    }
     return clone;
 }
 
